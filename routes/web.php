@@ -47,3 +47,5 @@ Route::middleware('auth', 'role:agent')->group(function (){
 
 
 });//End Group Middleware All Route
+
+Route::get('/admin/login', [AdminController::class, 'AdminLogin'])->name('admin.login');
