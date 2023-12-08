@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AgentController;
+use App\Http\Controllers\Backend\PropertyTypeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +33,7 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
+
 //--------------------------------AdminController All Route ------------------------------
 Route::middleware('auth', 'role:admin')->group(function (){
     Route::get('/admin/dashboard', [AdminController::class, 'AdminDashboard'])->name('admin.dashboard');
@@ -42,8 +44,7 @@ Route::middleware('auth', 'role:admin')->group(function (){
     Route::post('/admin/update/password', [AdminController::class, 'AdminUpdatePassword'])->name('admin.update.password');
 
 
-});//End Group Middleware All Route-
-
+});//End AdminController All Route
 
 //-------------------------------- AgentController All Route ------------------------------------
 Route::middleware('auth', 'role:agent')->group(function (){
@@ -53,3 +54,20 @@ Route::middleware('auth', 'role:agent')->group(function (){
 });//End Group Middleware All Route
 
 Route::get('/admin/login', [AdminController::class, 'AdminLogin'])->name('admin.login');
+
+//------------------------------------------------------------------------------------------------------//
+
+//--------------------------------PropertyTypeController All Route ------------------------------
+Route::middleware('auth', 'role:admin')->group(function (){
+   //Property Type All Route 
+   Route::controller(PropertyTypeController::class)->group(function(){
+       Route::get('/all/type', 'AllType')->name('all.type');
+       Route::get('/add/type', 'AddType')->name('add.type');
+       Route::post('/store/type', 'StoreType')->name('store.type');
+       Route::get('/edit/type/{id}', 'EditType')->name('edit.type');
+       Route::post('/update/type', 'UpdateType')->name('update.type');
+       Route::get('/delete/type/{id}', 'DeleteType')->name('delete.type');
+
+   });
+
+});//End PropertyTypeController All Route
