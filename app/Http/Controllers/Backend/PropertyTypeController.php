@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\PropertyType;
+use App\Models\Amenities;
 
 class PropertyTypeController extends Controller
 {
@@ -84,5 +85,73 @@ class PropertyTypeController extends Controller
         return redirect()->back()->with($notification);
         
     }//End Method
+
+
+    ///////////////////////////Amenities All Method/////////////////////////////////////
+    public function AllAmenities(){
+
+        $amenities = Amenities::latest()->get();
+        return view('backend.amenities.all_amenities', compact('amenities'));
+
+    }//End Method
+
+    public function AddAmenities(){
+
+        return view('backend.amenities.add_amenities');
+
+    }//End Method
+
+    public function StoreAmenities(Request $request){
+
+        Amenities::insert([
+           'amenities_name' => $request->amenities_name,
+       ]);
+       
+       $notification = array(
+           'message' => 'Amenities Create Successfully',
+           'alert-type' => 'success'
+       );
+
+       return redirect()->route('all.amenities')->with($notification);
+
+   }//End Method
+   
+   public function EditAmenites($id){
+
+    $amenities = Amenities::findOrFail($id);
+    return view('backend.amenities.edit_amenities', compact('amenities'));
+
+}//End Method
+
+public function UpdateAmenities(Request $request){
+
+    $ame_id = $request->id;
+
+    Amenities::findOrFail($ame_id)->update([
+       'amenities_name' => $request->amenities_name,
+   ]);
+   
+   $notification = array(
+       'message' => 'Amenities Update Successfully',
+       'alert-type' => 'success'
+   );
+
+   return redirect()->route('all.amenities')->with($notification);
+
+}//End Method
+
+
+public function DeleteAmenities($id){
+
+    Amenities::findOrFail($id)->delete();
+
+    $notification = array(
+        'message' => 'Amenities Delete Successfully',
+        'alert-type' => 'success'
+    );
+
+    return redirect()->back()->with($notification);
+    
+}//End Method
 
 }
